@@ -1,0 +1,2 @@
+image: jenciso/kubelet-stats-metrics:0.1.0
+logLevel: debug

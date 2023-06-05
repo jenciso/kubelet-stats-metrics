@@ -17,7 +17,4 @@ USER 65532:65532
 ENTRYPOINT ["/app"]
 
 LABEL org.opencontainers.image.title="Kubelet stats metrics Docker Image" \
-      org.opencontainers.image.description="kubelet-stats-metrics" \
-      org.opencontainers.image.url="https://github.com/GDATASoftwareAG/kubelet-stats-metrics" \
-      org.opencontainers.image.source="https://github.com/GDATASoftwareAG/kubelet-stats-metrics" \
-      org.opencontainers.image.license="MIT"
+      org.opencontainers.image.description="kubelet-stats-metrics"

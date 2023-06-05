@@ -98,14 +98,22 @@ func getMetrics(interval time.Duration, cs *kubernetes.Clientset) {
 	log.Debug("getMetrics has been invoked")
 
 	for {
-		nodes, err := cs.CoreV1().Nodes().List(context.Background(), metav1.ListOptions{})
-		if err != nil {
-			log.Fatalf("ErrorBadRequst : %s", err.Error())
-		}
-		for i := range nodes.Items {
-			currentNode := nodes.Items[i].Name
+		// if is defined a CURRENT_NODE_NAME env var. Scrape metrics only in this node
+		currentNode, err := os.LookupEnv("CURRENT_NODE_NAME")
+
+		if !err {
+			nodes, err := cs.CoreV1().Nodes().List(context.Background(), metav1.ListOptions{})
+			if err != nil {
+				log.Fatalf("ErrorBadRequst : %s", err.Error())
+			}
+			for i := range nodes.Items {
+				currentNode := nodes.Items[i].Name
+				scrapeSingleNode(cs, currentNode, opsQueued, opsRootfsQueued)
+			}
+		} else {
 			scrapeSingleNode(cs, currentNode, opsQueued, opsRootfsQueued)
 		}
+
 		time.Sleep(interval)
 	}
 }
